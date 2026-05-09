@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useDashboard from "../../hooks/useDashboard";
-import "./DashboardPage.css";
+import "./ProductoPage.css";
 
 // ─────────────────────────────────────────────
 //  pages/DashboardPage.jsx
@@ -11,28 +11,6 @@ import "./DashboardPage.css";
 // ─────────────────────────────────────────────
 
 
-// ── Icono SVG inline genérico ─────────────────────────────────────────────────
-
-function Icon({ d, size = 18 }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {Array.isArray(d) ? (
-        d.map((path, i) => <path key={i} d={path} />)
-      ) : (
-        <path d={d} />
-      )}
-    </svg>
-  );
-}
 
 // ── StockBadge ────────────────────────────────────────────────────────────────
 

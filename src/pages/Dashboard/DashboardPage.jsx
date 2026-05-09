@@ -1,73 +1,13 @@
 import { useEffect } from "react";
 import useDashboard from "../../hooks/useDashboard";
 import "./DashboardPage.css";
+import StatCard from "../../components/Cards/StatCard";
 
 // ─────────────────────────────────────────────
 //  pages/DashboardPage.jsx
 // ─────────────────────────────────────────────
-//  Reemplaza los datos de ejemplo por tus hooks
-//  reales cuando los tengas listos.
-//  Estructura basada en dashboard_guia.txt
-// ─────────────────────────────────────────────
-
-// ── Datos de ejemplo (reemplaza con tus hooks) ────────────────────────────────
-
-const MOCK_STATS = {
-  totalProducto: 148,
-  totalStock: 12_430,
-  stockBajos: 7,
-  totalCategorias: 12,
-};
-
-const MOCK_MOVEMENTS = [
-  {
-    id: 1,
-    movementType: "In",
-    quantity: 50,
-    producto: { name: "Cable HDMI 2.0", description: "Electrónica · SKU-0041" },
-  },
-  {
-    id: 2,
-    movementType: "Out",
-    quantity: 12,
-    producto: {
-      name: "Silla Ergonómica Pro",
-      description: "Mobiliario · SKU-0018",
-    },
-  },
-  {
-    id: 3,
-    movementType: "In",
-    quantity: 200,
-    producto: { name: "Resma Papel A4", description: "Papelería · SKU-0093" },
-  },
-  {
-    id: 4,
-    movementType: "Out",
-    quantity: 3,
-    producto: { name: 'Monitor 27" 4K', description: "Electrónica · SKU-0057" },
-  },
-  {
-    id: 5,
-    movementType: "In",
-    quantity: 80,
-    producto: {
-      name: "Teclado Mecánico TKL",
-      description: "Periféricos · SKU-0072",
-    },
-  },
-];
-
-const MOCK_LOW_STOCK = [
-  { id: 1, name: "Mouse Inalámbrico", stock: 2, stockMin: 10 },
-  { id: 2, name: "Webcam 1080p", stock: 1, stockMin: 5 },
-  { id: 3, name: "Hub USB-C 7 puertos", stock: 4, stockMin: 8 },
-  { id: 4, name: "Auriculares BT Pro", stock: 3, stockMin: 6 },
-  { id: 5, name: "Adaptador DisplayPort", stock: 0, stockMin: 4 },
-];
 
 // ── Icono SVG inline genérico ─────────────────────────────────────────────────
-
 function Icon({ d, size = 18 }) {
   return (
     <svg
@@ -99,22 +39,6 @@ function StockBadge({ stock, stockMin }) {
   return <span className="badge badge-accent">OK</span>;
 }
 
-// ── Stat card ─────────────────────────────────────────────────────────────────
-
-function StatCard({ label, value, iconPaths, colorClass, delay }) {
-  return (
-    <div className={`card stat-card anim-fade-up ${delay}`}>
-      <div className={`stat-icon ${colorClass}`}>
-        <Icon d={iconPaths} size={20} />
-      </div>
-      <div>
-        <p className="stat-label">{label}</p>
-        <p className="stat-value">{value}</p>
-      </div>
-    </div>
-  );
-}
-
 // ── Dashboard principal ───────────────────────────────────────────────────────
 
 export default function DashboardPage() {
@@ -127,8 +51,9 @@ export default function DashboardPage() {
   }, []);
 
   const data = Resumen;
-  const lastMovements = Movimientos;
-  const lowStock = Alerta;
+  const lastMovements = Array.isArray(Movimientos) ? Movimientos : [];
+
+  const lowStock = Array.isArray(Alerta) ? Alerta : [];
 
   const stats = [
     {
@@ -255,10 +180,10 @@ export default function DashboardPage() {
                           marginBottom: 2,
                         }}
                       >
-                        {mov.producto.name}
+                        {mov.product.name}
                       </p>
                       <p className="truncate" style={{ fontSize: "11.5px" }}>
-                        {mov.producto.description}
+                        {mov.product.description}
                       </p>
                     </div>
                     {/* Badge cantidad */}
@@ -303,7 +228,7 @@ export default function DashboardPage() {
                           marginBottom: 2,
                         }}
                       >
-                        {p.name}
+                        {p?.name ?? "Sin Nombre"}
                       </p>
                       {/* Barra de progreso */}
                       <div

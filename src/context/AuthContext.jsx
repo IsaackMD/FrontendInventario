@@ -52,11 +52,12 @@ export function AuthProvider({ children }) {
       password,
     });
 
-    if (!data.isSuccess) {
+
+    if (!data.success) {
       setError(data.error);
     }
 
-    setUser(data.value.user);
+    setUser(data.user);
     return data;
   };
 

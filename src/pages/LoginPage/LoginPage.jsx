@@ -41,8 +41,7 @@ export default function LoginPage() {
   const navegate = useNavigate();
   const { fields, errors, apiError, loading, handleChange, handleSubmit } =
     useLogin({
-      onSuccess: (data) => {
-        
+      onSuccess: () => {
        navegate('/dashboard');
       },
     });

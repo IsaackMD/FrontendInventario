@@ -6,9 +6,9 @@ import api from "./service/api";
 
 // ── 3. Hook principal ─────────────────────────────────────────────────────────
 const useDashboard = () => {
-  const [Resumen, SetResumen] = useState([]);
-  const [Movimientos, SetMovimientos] = useState([]);
-  const [Alerta, SetAlerta] = useState([]);
+  const [Resumen, SetResumen] = useState({});
+  const [Movimientos, SetMovimientos] = useState({});
+  const [Alerta, SetAlerta] = useState({});
   const [loading, setLoading] = useState(false);
   const ResumenInventario = async () => {
     const { isSuccess, error, value } = await api.get("/ResumenDashboard");
@@ -28,7 +28,7 @@ const useDashboard = () => {
       "/ResumenDashboard/low-products",
     );
     if (!isSuccess) return console.log(error);
-    SetMovimientos(value);
+    SetAlerta(value);
     return value;
   };
 

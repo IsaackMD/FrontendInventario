@@ -11,6 +11,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "../LoginPage/LoginPage";
 import ProtectedRoute from "./Protectedroute";
 import DashboardPage from "../Dashboard/DashboardPage";
+import ProductsPage from "../Productos/ProductoPage";
 
 // Páginas — ajusta las rutas de importación a tu estructura
 
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute />,             // guard: solo sesión activa
     children: [
       { path: "/dashboard",           element: <DashboardPage /> },
-    //   { path: "/products",   element: <ProductsPage /> },
+      { path: "/products",   element: <ProductsPage /> },
     //   { path: "/categories", element: <CategoriesPage /> },
     //   { path: "/reports",    element: <ReportsPage /> },
       {}
