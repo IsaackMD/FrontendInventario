@@ -47,7 +47,6 @@
           border-radius: 18px;
           padding: 48px 44px;
           width: 100%;
-          max-width: 420px;
           box-shadow: 0 0 60px rgba(0,0,0,.6), 0 0 0 1px rgba(74,222,128,.06);
           animation: fadeUp .45s ease both;
         }

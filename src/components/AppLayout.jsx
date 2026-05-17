@@ -9,7 +9,7 @@
 
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import useAuth from "../context/useAuth";
 import styles from "./AppLayout.style";
 // ── Nav items ─────────────────────────────────────────────────────────────────
 //  Agrega o quita rutas aquí. `roles` opcional: solo aparece si el usuario
@@ -18,7 +18,7 @@ import styles from "./AppLayout.style";
 const NAV_ITEMS = [
   {
     label: "Dashboard",
-    to: "/",
+    to: "/dashboard",
     roles: [],
     icon: (
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

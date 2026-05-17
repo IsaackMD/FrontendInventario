@@ -8,10 +8,20 @@
 //  para saber si hay sesión activa.
 // ─────────────────────────────────────────────
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import api from "../hooks/service/api";
 
 const AuthContext = createContext(null);
+
+function resolveAuthUser(data) {
+  return data?.value ?? data?.user ?? data?.data ?? null;
+}
+
+function resolveAuthSuccess(data) {
+  if (typeof data?.isSuccess === "boolean") return data.isSuccess;
+  if (typeof data?.success === "boolean") return data.success;
+  return Boolean(resolveAuthUser(data));
+}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -25,9 +35,8 @@ export function AuthProvider({ children }) {
   const checkSession = async () => {
     try {
       const data = await api.get("/User/auth/me");
-      console.log("Datos Result:", data);
-      if (data.isSuccess) {
-        setUser(data.value);
+      if (resolveAuthSuccess(data)) {
+        setUser(resolveAuthUser(data));
       } else {
         setUser(null);
       }
@@ -52,12 +61,14 @@ export function AuthProvider({ children }) {
       password,
     });
 
-
-    if (!data.success) {
-      setError(data.error);
+    if (!resolveAuthSuccess(data)) {
+      setError(data?.error ?? data?.message ?? "No fue posible iniciar sesión.");
+      setUser(null);
+      return data;
     }
 
-    setUser(data.user);
+    setError(null);
+    setUser(resolveAuthUser(data));
     return data;
   };
 
@@ -88,8 +99,4 @@ export function AuthProvider({ children }) {
 }
 
 // ── Hook de consumo ───────────────────────────────────────────────────────────
-export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth debe usarse dentro de <AuthProvider>.");
-  return ctx;
-}
+export { AuthContext };

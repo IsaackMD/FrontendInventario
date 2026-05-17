@@ -43,12 +43,11 @@ function StockBadge({ stock, stockMin }) {
 
 export default function DashboardPage() {
   // 👇 Sustituye por tus hooks cuando los tengas
-  const { Resumen, Movimientos, Alerta, loadDashboard, loading } =
-    useDashboard();
+  const { Resumen, Movimientos, Alerta, loadDashboard } = useDashboard();
 
   useEffect(() => {
     loadDashboard();
-  }, []);
+  }, [loadDashboard]);
 
   const data = Resumen;
   const lastMovements = Array.isArray(Movimientos) ? Movimientos : [];
@@ -140,7 +139,7 @@ export default function DashboardPage() {
         }}
       >
         {/* Movimientos recientes */}
-        <div className="card anim-fade-up delay-5">
+        <div className="card anim-fade-up delay-5" style={{maxWidth: '420px'}}>
           <div className="card-header">
             <h4>Movimientos Recientes</h4>
             <span className="badge badge-muted">

@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────
 //  useLogin.js  –  Hook personalizado de login
 // ─────────────────────────────────────────────
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import api from "./service/api";
 
 // ── 3. Hook principal ─────────────────────────────────────────────────────────
@@ -10,30 +10,30 @@ const useDashboard = () => {
   const [Movimientos, SetMovimientos] = useState({});
   const [Alerta, SetAlerta] = useState({});
   const [loading, setLoading] = useState(false);
-  const ResumenInventario = async () => {
+  const ResumenInventario = useCallback(async () => {
     const { isSuccess, error, value } = await api.get("/ResumenDashboard");
     if (!isSuccess) return console.log(error);
     SetResumen(value);
     return value;
-  };
-  const getMovimientos = async () => {
+  }, []);
+  const getMovimientos = useCallback(async () => {
     const { isSuccess, error, value } = await api.get("/Stock/LastMovements");
     if (!isSuccess) return console.log(error);
     SetMovimientos(value);
     return value;
-  };
+  }, []);
 
-  const getAlertas = async () => {
+  const getAlertas = useCallback(async () => {
     const { isSuccess, error, value } = await api.get(
       "/ResumenDashboard/low-products",
     );
     if (!isSuccess) return console.log(error);
     SetAlerta(value);
     return value;
-  };
+  }, []);
 
   // 🔥 Aquí vive el Promise.all
-  const loadDashboard = async () => {
+  const loadDashboard = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -43,7 +43,7 @@ const useDashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [ResumenInventario, getMovimientos, getAlertas]);
 
   return { loadDashboard, Resumen, Movimientos, Alerta, loading };
 };

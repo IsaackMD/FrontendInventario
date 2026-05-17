@@ -2,7 +2,7 @@
 //  useLogin.js  –  Hook personalizado de login
 // ─────────────────────────────────────────────
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import useAuth from "../context/useAuth";
 
 // ── 1. Validaciones puras (sin efectos secundarios) ──────────────────────────
 export const validate = ({ email, password }) => {
