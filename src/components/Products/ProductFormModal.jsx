@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const INITIAL_FORM = {
   name: "",
@@ -27,10 +27,12 @@ function getInitialState(product) {
 }
 
 export default function ProductFormModal({
+  loadCategorias,
   product,
   saving,
   onClose,
   onSubmit,
+  categorias = [],
 }) {
   const [form, setForm] = useState(() => getInitialState(product));
 
@@ -45,6 +47,12 @@ export default function ProductFormModal({
     event.preventDefault();
     onSubmit(form);
   };
+
+  useEffect(() => {
+    loadCategorias();
+  }, [loadCategorias]);
+
+
 
   return (
     <div className="products-modal-overlay" role="presentation">
@@ -63,7 +71,7 @@ export default function ProductFormModal({
 
         <form className="products-form" onSubmit={handleSubmit}>
           <div className="products-form-grid">
-            <div>
+            <div className="products-form-span">
               <label htmlFor="product-name">Nombre</label>
               <input
                 id="product-name"
@@ -86,27 +94,21 @@ export default function ProductFormModal({
                 rows="4"
               />
             </div>
-
-            <div>
-              <label htmlFor="product-category-name">Categoría</label>
-              <input
-                id="product-category-name"
-                className="input"
-                value={form.categoryName}
-                onChange={(event) =>
-                  handleChange("categoryName", event.target.value)
-                }
-              />
-            </div>
-
-            <div>
-              <label htmlFor="product-category-id">Id Categoría</label>
-              <input
+            <div className="products-form-span">
+              <label htmlFor="product-category-id">Categorías</label>
+              <select
                 id="product-category-id"
                 className="input"
                 value={form.categoryId}
                 onChange={(event) => handleChange("categoryId", event.target.value)}
-              />
+              >
+                <option value="">Seleccione Categoria</option>
+                {categorias.map((categoria) => (
+                  <option key={categoria.id} value={categoria.id}>
+                    {categoria.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>

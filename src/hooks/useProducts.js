@@ -60,6 +60,8 @@ export default function useProducts() {
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
   const [error, setError] = useState("");
+  const [categorias, setCategorias] = useState([]);
+
 
   const loadProducts = useCallback(async () => {
     try {
@@ -135,16 +137,40 @@ export default function useProducts() {
     [loadProducts],
   );
 
+  const loadCategorias = useCallback(() => {
+    return (async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await api.get("/Categories");
+        if (response?.isSuccess && Array.isArray(response.value)) {
+          setCategorias(response.value);
+        } else {
+          setCategorias([]);
+        }
+
+      } catch (error) {
+        setError(error?.message ?? "No se pudieron cargar las categorías.");
+        setCategorias([]);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
   const summary = useMemo(() => getSummary(products), [products]);
 
   return {
     products,
+    categorias,
     summary,
     loading,
     saving,
     deletingId,
     error,
     loadProducts,
+    loadCategorias,
     createProduct,
     updateProduct,
     deleteProduct,
