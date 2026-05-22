@@ -1,0 +1,76 @@
+.categories-insights-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: var(--space-4);
+}
+
+.categories-insight-card {
+  min-height: 100%;
+}
+
+.categories-playbook {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6) var(--space-6);
+}
+
+.categories-playbook-item {
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(74, 222, 128, 0.06), transparent 70%),
+    rgba(255, 255, 255, 0.02);
+}
+
+.categories-playbook-item strong {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--text-primary);
+}
+
+.categories-playbook-item p {
+  font-size: 13px;
+}
+
+.categories-health-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6) var(--space-6);
+}
+
+.categories-health-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.categories-health-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.categories-health-row span {
+  color: var(--text-secondary);
+}
+
+.categories-health-row strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--text-primary);
+}
+
+@media (max-width: 1080px) {
+  .categories-insights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .categories-playbook {
+    grid-template-columns: 1fr;
+  }
+}
