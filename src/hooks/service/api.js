@@ -2,6 +2,11 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_URL_API;
 
+if (!BASE_URL) {
+  console.log('No se encontro el base url');
+  throw new Error("VITE_URL_API no está definida");
+}
+
 const apiClient = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
