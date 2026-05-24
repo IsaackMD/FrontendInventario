@@ -1,3 +1,4 @@
+import { Minus, Plus } from "lucide-react";
 import ProductStatusBadge from "./ProductStatusBadge";
 
 function formatPrice(price) {
@@ -20,7 +21,14 @@ function EmptyStateRow({ children }) {
   );
 }
 
-function ProductRow({ product, deletingId, onEdit, onDelete }) {
+function ProductRow({
+  product,
+  deletingId,
+  onEdit,
+  onDelete,
+  openAdjust,
+  isAdjusting,
+}) {
   const isDeleting = deletingId === product.id;
 
   return (
@@ -58,13 +66,42 @@ function ProductRow({ product, deletingId, onEdit, onDelete }) {
           >
             {isDeleting ? "Eliminando..." : "Eliminar"}
           </button>
+          <div className="stock-actions">
+            <button
+              type="button"
+              className="stock-action-button stock-action-button--add"
+              onClick={() => openAdjust(product, "entrada")}
+              disabled={isAdjusting}
+              aria-label={`Agregar stock a ${product.name}`}
+            >
+              <Plus size={16} />
+            </button>
+
+            <button
+              type="button"
+              className="stock-action-button stock-action-button--remove"
+              onClick={() => openAdjust(product, "salida")}
+              disabled={product.stock === 0 || isAdjusting}
+              aria-label={`Retirar stock de ${product.name}`}
+            >
+              <Minus size={16} />
+            </button>
+          </div>
         </div>
       </td>
     </tr>
   );
 }
 
-function ProductsTableBody({ products, loading, deletingId, onEdit, onDelete }) {
+function ProductsTableBody({
+  products,
+  loading,
+  deletingId,
+  onEdit,
+  onDelete,
+  openAdjust,
+  isAdjusting,
+}) {
   if (loading) {
     return (
       <tbody>
@@ -95,6 +132,8 @@ function ProductsTableBody({ products, loading, deletingId, onEdit, onDelete }) 
           deletingId={deletingId}
           onEdit={onEdit}
           onDelete={onDelete}
+          isAdjusting={isAdjusting}
+          openAdjust={openAdjust}
         />
       ))}
     </tbody>
@@ -107,6 +146,8 @@ export default function ProductsTable({
   deletingId,
   onEdit,
   onDelete,
+  openAdjust,
+  isAdjusting,
 }) {
   return (
     <section className="card anim-fade-up delay-5">
@@ -139,6 +180,8 @@ export default function ProductsTable({
             deletingId={deletingId}
             onEdit={onEdit}
             onDelete={onDelete}
+            openAdjust={openAdjust}
+            isAdjusting={isAdjusting}
           />
         </table>
       </div>

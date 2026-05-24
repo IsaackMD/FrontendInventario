@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import api from "./service/api";
+import { toast } from "sonner";
 
 const PRODUCTS_ENDPOINT = "/Products";
 
@@ -61,7 +62,6 @@ export default function useProducts() {
   const [deletingId, setDeletingId] = useState(null);
   const [error, setError] = useState("");
   const [categorias, setCategorias] = useState([]);
-
 
   const loadProducts = useCallback(async () => {
     try {
@@ -137,28 +137,34 @@ export default function useProducts() {
     [loadProducts],
   );
 
-  const loadCategorias = useCallback(() => {
-    return (async () => {
+  const decrementProductQuantity = useCallback(
+    async ({ ProductId, Quantity }) => {
       try {
-        setLoading(true);
         setError("");
 
-        const response = await api.get("/Categories");
-        if (response?.isSuccess && Array.isArray(response.value)) {
-          setCategorias(response.value);
-        } else {
-          setCategorias([]);
-        }
-
+        await api.post("/Products/decrease", { ProductId, Quantity });
+        return await loadProducts();
       } catch (error) {
-        setError(error?.message ?? "No se pudieron cargar las categorías.");
-        setCategorias([]);
-      } finally {
-        setLoading(false);
+        console.error("Error al ajustar stock:", error);
+        toast.error("❌ Error al ajustar el stock");
       }
-    })();
-  }, []);
+    },
+    [loadProducts],
+  );
 
+  const incrementProductQuantity = useCallback(
+    async ({ ProductId, Quantity }) => {
+      try {
+        setError("");
+        await api.post("/Products/increase", { ProductId, Quantity });
+        return await loadProducts();
+      } catch (error) {
+        console.error("Error al ajustar stock:", error);
+        toast.error("❌ Error al ajustar el stock");
+      }
+    },
+    [loadProducts],
+  );
   const summary = useMemo(() => getSummary(products), [products]);
 
   return {
@@ -170,9 +176,10 @@ export default function useProducts() {
     deletingId,
     error,
     loadProducts,
-    loadCategorias,
     createProduct,
     updateProduct,
     deleteProduct,
+    incrementProductQuantity,
+    decrementProductQuantity,
   };
 }

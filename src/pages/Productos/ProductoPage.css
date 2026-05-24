@@ -202,3 +202,66 @@
     flex-direction: column-reverse;
   }
 }
+
+
+.stock-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stock-action-button {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 10px;
+
+  border: 1px solid transparent;
+
+  background: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    transform 120ms ease,
+    opacity 120ms ease;
+}
+
+.stock-action-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.stock-action-button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.stock-action-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.stock-action-button--add {
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.25);
+}
+
+.stock-action-button--add:hover:not(:disabled) {
+  background: rgba(74, 222, 128, 0.12);
+  border-color: rgba(74, 222, 128, 0.4);
+}
+
+.stock-action-button--remove {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.25);
+}
+
+.stock-action-button--remove:hover:not(:disabled) {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.4);
+}

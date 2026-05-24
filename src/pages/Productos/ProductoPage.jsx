@@ -6,6 +6,8 @@ import ProductsTable from "../../components/Products/ProductsTable";
 import ProductFormModal from "../../components/Products/ProductFormModal";
 import DeleteProductModal from "../../components/Products/DeleteProductModal";
 import "./ProductoPage.css";
+import { toast } from "sonner";
+import { StockAdjustDialog } from "../../components/Products/StockAdjustDialog";
 
 export default function ProductoPage() {
   const {
@@ -21,6 +23,8 @@ export default function ProductoPage() {
     createProduct,
     updateProduct,
     deleteProduct,
+    incrementProductQuantity,
+    decrementProductQuantity,
   } = useProducts();
 
   const [search, setSearch] = useState("");
@@ -28,6 +32,9 @@ export default function ProductoPage() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [formModalKey, setFormModalKey] = useState(0);
+  const [adjustType, setAdjustType] = useState("entrada");
+  const [adjustOpen, setAdjustOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     loadProducts();
@@ -101,6 +108,39 @@ export default function ProductoPage() {
     setSelectedProduct(null);
   };
 
+  const openAdjust = (product, type) => {
+    setSelectedProduct(product);
+    setAdjustType(type);
+    setAdjustOpen(true);
+    setLoading(false);
+  };
+
+  const handleStockAdjust = async ({ productId, quantity }) => {
+    try {
+      setAdjustOpen(true);
+      setLoading(true);
+      const body = {
+        ProductId: productId,
+        Quantity: quantity,
+      };
+
+      if (adjustType === "entrada") {
+        await incrementProductQuantity(body);
+        toast.success(`✅ Se agregaron ${quantity} unidades al stock`);
+      } else {
+        await decrementProductQuantity(body);
+        toast.success(`✅ Se retiraron ${quantity} unidades del stock`);
+      }
+    } catch (error) {
+      console.error("Error al ajustar stock:", error);
+      toast.error("❌ Error al ajustar el stock");
+      throw error;
+    } finally {
+      setAdjustOpen(false);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="products-page-shell">
       <ProductsHeader
@@ -125,6 +165,8 @@ export default function ProductoPage() {
         deletingId={deletingId}
         onEdit={handleEditClick}
         onDelete={handleDeleteClick}
+        openAdjust={openAdjust}
+        isAdjusting={adjustOpen}
       />
 
       {isFormOpen ? (
@@ -146,6 +188,15 @@ export default function ProductoPage() {
         deleting={Boolean(deletingId)}
         onClose={closeDeleteModal}
         onConfirm={handleConfirmDelete}
+      />
+
+      <StockAdjustDialog
+        product={selectedProduct}
+        type={adjustType}
+        open={adjustOpen}
+        onOpenChange={setAdjustOpen}
+        onAdjust={handleStockAdjust}
+        isLoading={isLoading}
       />
     </div>
   );
