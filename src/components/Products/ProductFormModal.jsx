@@ -52,11 +52,13 @@ export default function ProductFormModal({
     loadCategorias();
   }, [loadCategorias]);
 
-
-
   return (
     <div className="products-modal-overlay" role="presentation">
-      <div className="products-modal card anim-fade-in" role="dialog" aria-modal="true">
+      <div
+        className="products-modal card anim-fade-in"
+        role="dialog"
+        aria-modal="true"
+      >
         <div className="card-header">
           <div>
             <h4>{product ? "Editar producto" : "Nuevo producto"}</h4>
@@ -64,7 +66,10 @@ export default function ProductFormModal({
               Completa la información principal del producto.
             </p>
           </div>
-          <button className="btn btn-ghost products-close-btn" onClick={onClose}>
+          <button
+            className="btn btn-ghost products-close-btn"
+            onClick={onClose}
+          >
             Cerrar
           </button>
         </div>
@@ -100,7 +105,9 @@ export default function ProductFormModal({
                 id="product-category-id"
                 className="input"
                 value={form.categoryId}
-                onChange={(event) => handleChange("categoryId", event.target.value)}
+                onChange={(event) =>
+                  handleChange("categoryId", event.target.value)
+                }
               >
                 <option value="">Seleccione Categoria</option>
                 {categorias.map((categoria) => (
@@ -111,17 +118,21 @@ export default function ProductFormModal({
               </select>
             </div>
 
-            <div>
-              <label htmlFor="product-stock">Stock</label>
-              <input
-                id="product-stock"
-                className="input"
-                type="number"
-                min="0"
-                value={form.stock}
-                onChange={(event) => handleChange("stock", event.target.value)}
-              />
-            </div>
+            {!product && (
+              <div>
+                <label htmlFor="product-stock">Stock</label>
+                <input
+                  id="product-stock"
+                  className="input"
+                  type="number"
+                  min="0"
+                  value={form.stock}
+                  onChange={(event) =>
+                    handleChange("stock", event.target.value)
+                  }
+                />
+              </div>
+            )}
 
             <div>
               <label htmlFor="product-stock-min">Stock mínimo</label>
@@ -131,7 +142,9 @@ export default function ProductFormModal({
                 type="number"
                 min="0"
                 value={form.stockMin}
-                onChange={(event) => handleChange("stockMin", event.target.value)}
+                onChange={(event) =>
+                  handleChange("stockMin", event.target.value)
+                }
               />
             </div>
           </div>
@@ -141,7 +154,11 @@ export default function ProductFormModal({
               Cancelar
             </button>
             <button className="btn btn-primary" type="submit" disabled={saving}>
-              {saving ? "Guardando..." : product ? "Guardar cambios" : "Crear producto"}
+              {saving
+                ? "Guardando..."
+                : product
+                  ? "Guardar cambios"
+                  : "Crear producto"}
             </button>
           </div>
         </form>

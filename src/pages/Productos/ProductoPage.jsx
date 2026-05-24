@@ -8,6 +8,7 @@ import DeleteProductModal from "../../components/Products/DeleteProductModal";
 import "./ProductoPage.css";
 import { toast } from "sonner";
 import { StockAdjustDialog } from "../../components/Products/StockAdjustDialog";
+import useCategory from "../../hooks/useCategory";
 
 export default function ProductoPage() {
   const {
@@ -17,15 +18,18 @@ export default function ProductoPage() {
     saving,
     deletingId,
     error,
-    categorias,
     loadProducts,
-    loadCategorias,
     createProduct,
     updateProduct,
     deleteProduct,
     incrementProductQuantity,
     decrementProductQuantity,
   } = useProducts();
+
+  const {
+    categories,
+    loadCategories
+  } = useCategory();
 
   const [search, setSearch] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -171,10 +175,10 @@ export default function ProductoPage() {
 
       {isFormOpen ? (
         <ProductFormModal
-          loadCategorias={loadCategorias}
+          loadCategorias={loadCategories}
           key={formModalKey}
           product={selectedProduct}
-          categorias={categorias}
+          categorias={categories}
           saving={saving}
           onClose={closeFormModal}
           onSubmit={handleSubmitProduct}
@@ -184,7 +188,7 @@ export default function ProductoPage() {
       <DeleteProductModal
         open={isDeleteOpen}
         product={selectedProduct}
-        categorias={categorias}
+        categorias={categories}
         deleting={Boolean(deletingId)}
         onClose={closeDeleteModal}
         onConfirm={handleConfirmDelete}

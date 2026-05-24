@@ -90,10 +90,8 @@ export async function createCategoryRequest(formData) {
 }
 
 export async function updateCategoryRequest(categoryId, formData) {
-  return api.put(CATEGORIES_ENDPOINT, {
-    ...buildCategoryPayload(formData),
-    Id: categoryId,
-  });
+  const payload = { ...buildCategoryPayload(formData), Id: categoryId };
+  return api.put(CATEGORIES_ENDPOINT, payload);
 }
 
 export async function deleteCategoryRequest(categoryId) {
