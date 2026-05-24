@@ -14,7 +14,7 @@ import api from "../hooks/service/api";
 const AuthContext = createContext(null);
 
 function resolveAuthUser(data) {
-  return data?.value ?? data?.user ?? data?.data ?? null;
+  return data?.value ?? data?.user ?? data?.data?.user ?? null;
 }
 
 function resolveAuthSuccess(data) {
@@ -67,6 +67,7 @@ export function AuthProvider({ children }) {
       return data;
     }
 
+    console.log("DAta usuario:", data);
     setError(null);
     setUser(resolveAuthUser(data));
     return data;
